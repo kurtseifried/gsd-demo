@@ -7,7 +7,7 @@
             class="shadow-1 overflow-hidden"
             style="border-radius: 30px;"
             icon="terminal"
-            label="JSON Data"
+            label="Raw JSON Data"
             header-class="bg-primary text-white"
             expand-icon-class="text-white"
           >
