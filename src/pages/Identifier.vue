@@ -13,6 +13,14 @@
           >
             <q-card style="background: #2d2d2d;">
               <q-card-section style="overflow: auto; max-height: 80vh;">
+                <a
+                  :href="`https://api.globalsecuritydatabase.io/${identifier}`"
+                  target="_blank"
+                  v-if="jsonBlob"
+                  style="color: white;"
+                >
+                  https://api.globalsecuritydatabase.io/{{ identifier }}
+                </a>
                 <pre class="line-numbers" v-if="jsonBlob"><code class="language-json">{{ jsonBlob }}</code></pre>
                 <p v-else style="color: white;">Invalid identifier.</p>
               </q-card-section>
@@ -60,7 +68,7 @@ export default defineComponent({
       }
     )
 
-    return { jsonBlob }
+    return { jsonBlob, identifier }
   }
 })
 </script>
