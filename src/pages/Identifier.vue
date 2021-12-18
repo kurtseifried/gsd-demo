@@ -12,7 +12,7 @@
             expand-icon-class="text-white"
           >
             <q-card style="background: #2d2d2d;">
-              <q-card-section style="overflow: auto;">
+              <q-card-section style="overflow: auto; max-height: 80vh;">
                 <pre class="line-numbers" v-if="jsonBlob"><code class="language-json">{{ jsonBlob }}</code></pre>
                 <p v-else style="color: white;">Invalid identifier.</p>
               </q-card-section>
