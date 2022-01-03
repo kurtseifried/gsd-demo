@@ -32,9 +32,9 @@
 
     <div class="row items-start justify-evenly q-col-gutter-md q-ma-md" v-for="namespace in namespaces" :key="namespace">
       <div class="col-grow">
-        <q-card bordered class="q-pa-md">
-          <q-card-section>
-            <div class="text-h5">{{ namespace }}</div>
+        <q-card bordered>
+          <q-card-section class="bg-primary text-white">
+            <div class="text-h5">Namespace: "{{ namespace }}"</div>
           </q-card-section>
 
           <q-separator />
@@ -56,7 +56,7 @@
                 <tr v-for="key in Object.keys(jsonBlob[namespace])" :key="key">
                   <td class="text-right">{{ key }}</td>
                   <td class="text-left">
-                    <div style="max-height: 50vh; max-width: 70vw; overflow: auto;">
+                    <div style="max-height: 50vh; max-width: 80vw; overflow: auto;">
                       <template v-if="typeof jsonBlob[namespace][key] === 'string'">
                         <div style="white-space: pre-line;">
                           {{ jsonBlob[namespace][key] }}
