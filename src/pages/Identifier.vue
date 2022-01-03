@@ -30,7 +30,65 @@
       </div>
     </div>
 
-    <div class="row items-start justify-evenly q-col-gutter-md q-ma-md" v-if="cveId">
+    <div class="row items-start justify-evenly q-col-gutter-md q-ma-md" v-for="namespace in namespaces" :key="namespace">
+      <div class="col-grow">
+        <q-card bordered class="q-pa-md">
+          <q-card-section>
+            <div class="text-h5">{{ namespace }}</div>
+          </q-card-section>
+
+          <q-separator />
+
+          <q-card-section horizontal>
+            <q-markup-table
+              class="bg-primary full-width text-center"
+              dark
+              bordered
+              separator="cell"
+            >
+              <thead class="bg-dark">
+                <tr>
+                  <th>Key</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="key in Object.keys(jsonBlob[namespace])" :key="key">
+                  <td class="text-right">{{ key }}</td>
+                  <td class="text-left">
+                    <div style="max-height: 50vh; max-width: 70vw; overflow: auto;">
+                      <template v-if="typeof jsonBlob[namespace][key] === 'string'">
+                        <div style="white-space: pre-line;">
+                          {{ jsonBlob[namespace][key] }}
+                        </div>
+                      </template>
+
+                      <template v-else-if="Array.isArray(jsonBlob[namespace][key]) && jsonBlob[namespace][key].every((el) => typeof el === 'string')">
+                        <ul>
+                          <li v-for="element in jsonBlob[namespace][key]" :key="element">
+                            {{ element }}
+                          </li>
+                        </ul>
+                      </template>
+
+                      <template v-else-if="typeof jsonBlob[namespace][key] === 'number'">
+                        {{ jsonBlob[namespace][key] }}
+                      </template>
+
+                      <template v-else>
+                        <pre class="line-numbers" v-if="jsonBlob"><code class="language-json">{{ jsonBlob[namespace][key] }}</code></pre>
+                      </template>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </q-markup-table>
+          </q-card-section>
+        </q-card>
+      </div>
+    </div>
+
+    <div class="row items-start justify-evenly q-col-gutter-md q-ma-md" v-if="cveId && false">
       <div class="col-grow">
         <q-card bordered class="q-pa-md">
           <q-card-section>
@@ -89,7 +147,7 @@
       </div>
     </div>
 
-    <div class="row items-start justify-evenly q-col-gutter-md q-ma-md" v-if="cveId">
+    <div class="row items-start justify-evenly q-col-gutter-md q-ma-md" v-if="cveId && false">
       <div class="col-grow">
         <q-card bordered class="q-pa-md">
           <q-card-section>
@@ -176,6 +234,12 @@ export default defineComponent({
         (error) => {}
       )
     }
+
+    const namespaces = computed(
+      () => {
+        return Object.keys(jsonBlob.value)
+      }
+    )
 
     // const gsdOverlayData
     // const cveOriginalData
@@ -307,6 +371,7 @@ export default defineComponent({
     return {
       jsonBlob,
       identifier,
+      namespaces,
       cveId,
       cveDescription,
       cveState,
