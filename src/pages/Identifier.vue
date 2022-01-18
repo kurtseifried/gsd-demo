@@ -10,6 +10,11 @@
           <template v-else>
             Invalid Identifier
           </template>
+
+        </div>
+
+        <div class="text-center">
+          <q-btn class="q-ma-md" color="positive" label="Edit" @click="editGSD" />
         </div>
       </div>
     </div>
@@ -140,7 +145,7 @@ export default defineComponent({
     const $route = useRoute()
     const $router = useRouter()
 
-    const identifier = ref($route.params.id)
+    const identifier = ref(decodeURIComponent($route.params.id))
     const jsonBlob = ref('')
     const validIdentifier = ref(true)
 
@@ -152,7 +157,7 @@ export default defineComponent({
         return
       }
 
-      if (identifier.value.match(/^GSD-\d{4}-\d{4,}$/) || identifier.value.match(/^UVI-\d{4}-\d{4,}$/)) {
+      if (isValidIdentifier(identifier.value)) {
         api.get(`/${identifier.value}`).then(
           (response) => {
             if (response.status === 200 && response.data !== '404: Not Found') {
@@ -204,13 +209,17 @@ export default defineComponent({
     watch(
       () => $route.params.id,
       (newValue) => {
-        identifier.value = newValue
+        identifier.value = decodeURIComponent(newValue)
         jsonBlob.value = ''
 
         // update any time the identifier changes
         updateJsonBlob()
       }
     )
+
+    function isValidIdentifier(value) {
+      return (value.match(/^GSD-\d{4}-\d{4,}$/) || value.match(/^UVI-\d{4}-\d{4,}$/))
+    }
 
     function isSimpleString(value) {
       return typeof value === 'string'
@@ -229,11 +238,33 @@ export default defineComponent({
       )
     }
 
+    function editGSD() {
+      // TODO: Raise error or something?
+      if (!isValidIdentifier(identifier.value)) { return }
+
+      const repo = 'https://github.com/cloudsecurityalliance/gsd-database'
+      const branch = 'main'
+
+      const year = identifier.value.split('-')[1]
+      const thousands = `${identifier.value.split('-')[2].slice(0, -3)}xxx`
+
+      const path = `/edit/${branch}/${year}/${thousands}/${identifier.value}.json`
+      const editUrl = `${repo}/${path}`
+
+      // TODO: Open a dialog and allow editing locally instead, with sanity checks. Also allow editing specific fields quickly.
+      window.open(
+        editUrl,
+        '_blank'
+      )
+    }
+
     return {
       jsonBlob,
       identifier,
       namespaces,
       validIdentifier,
+      //
+      editGSD,
       //
       isSimpleString,
       isSimpleNumber,
