@@ -8,6 +8,12 @@
 
         <q-space />
 
+        <q-btn
+          label="Demo Github Repo"
+          flat
+          @click="openGithubRepo()"
+        />
+
         <q-input
           v-model="searchField"
           @keyup.enter="search"
@@ -57,6 +63,10 @@ export default defineComponent({
       }
     }
 
+    function openGithubRepo() {
+      window.open('https://github.com/cloudsecurityalliance/gsd-demo', '_blank')
+    }
+
     watch(
       () => $route.params.id,
       (newValue) => {
@@ -66,7 +76,8 @@ export default defineComponent({
 
     return {
       searchField,
-      search
+      search,
+      openGithubRepo,
     }
   }
 })
