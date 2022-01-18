@@ -248,8 +248,7 @@ export default defineComponent({
       const year = identifier.value.split('-')[1]
       const thousands = `${identifier.value.split('-')[2].slice(0, -3)}xxx`
 
-      const path = `/edit/${branch}/${year}/${thousands}/${identifier.value}.json`
-      const editUrl = `${repo}/${path}`
+      const editUrl = `${repo}/edit/${branch}/${year}/${thousands}/${identifier.value}.json`
 
       // TODO: Open a dialog and allow editing locally instead, with sanity checks. Also allow editing specific fields quickly.
       window.open(
