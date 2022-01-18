@@ -10,10 +10,9 @@
           <template v-else>
             Invalid Identifier
           </template>
-
         </div>
 
-        <div class="text-center">
+        <div class="text-center" v-if="validIdentifier">
           <q-btn class="q-ma-md" color="positive" label="Edit" @click="editGSD" />
         </div>
       </div>
